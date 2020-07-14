@@ -35,7 +35,13 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     const { image_url } = req.query;
 
     if (image_url) {
-        return res.status(200).send('url received')
+      try {
+        const filteredPath = await filterImageFromURL(image_url)
+        return res.status(200).send('url filtered')
+      } catch (err) {
+        return res.status(500).send('url received but not filtered')
+      }
+      
     } else{
       return res.status(400).send('No url provided')
     }
